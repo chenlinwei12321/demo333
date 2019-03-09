@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>智云爬虫</title>
+    <link rel="stylesheet" th:href="${'//'+assetsHost+'/crawler-web/'+assetsVersion+'/index.css'}" />
+</head>
+<body>
+
+<div id="root"></div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.g_config = {
+        user: JSON.parse([[${user}]]),
+        env: [[${env}]]
+    };
+    /*]]>*/
+</script>
+
+<script th:src="${'//'+assetsHost+'/crawler-web/'+assetsVersion+'/index.js'}"></script>
+
+</body>
+</html>

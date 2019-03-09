@@ -1,0 +1,10 @@
+{
+  "site": {
+    "timeout": 20000,
+    "retry": 5,
+    "circleRetry": 3,
+    "sleep": 200,
+    "useGzip": true,
+    "userAgent": "Chrome"
+  }
+}

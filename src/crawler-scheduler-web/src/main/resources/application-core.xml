@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<import resource="druid.xml" />
+	<import resource="classpath*:context/dao-context.xml"/>
+
+	<!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+		<!--<property name="dataSource" ref="dataSource" />-->
+		<!--<property name="mapperLocations" value="classpath*:mybatis/mapper/*.xml" />-->
+	<!--</bean>-->
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="appSqlSessionFactory" />
+	</bean>
+
+	<mybatis:scan base-package="com.shuwen.crawler.core.*.dao" />
+
+	<bean id="syncClient" class="com.alicloud.openservices.tablestore.SyncClient"  destroy-method="shutdown">
+		<constructor-arg name="endpoint" value="${ots.endpoint}" />
+		<constructor-arg name="accessKeyId" value="${aliyun.access.key}" />
+		<constructor-arg name="accessKeySecret" value="${aliyun.secret.key}" />
+		<constructor-arg name="instanceName" value="${ots.instanceName}" />
+	</bean>
+
+	<bean id="taskDAO" class="com.shuwen.crawler.common.task.dao.impl.TaskDAOImpl">
+	</bean>
+	<bean id="taskJedisDAO" class="com.shuwen.crawler.common.task.dao.impl.JedisTaskDAOImpl">
+	</bean>
+	<bean id="htmlResultDao" class="com.shuwen.crawler.common.monitor.HtmlResultDaoImpl"/>
+
+	<bean id="seedDAO" class="com.shuwen.crawler.common.task.dao.impl.SeedDAOImpl"/>
+
+	<bean id="scheduledTaskDAO"
+		class="com.shuwen.crawler.common.task.dao.impl.ScheduledTaskDAOImpl">
+	</bean>
+
+	<bean id="taskService"
+		class="com.shuwen.crawler.common.task.service.impl.TaskServiceImpl">
+	</bean>
+	<bean id="taskJedisService"
+		  class="com.shuwen.crawler.common.task.service.impl.JedisTaskServiceImpl">
+	</bean>
+	<bean id="taskServiceFactory"
+		  class="com.shuwen.crawler.common.task.service.impl.TaskServiceFactory">
+	</bean>
+
+	<bean id="seedService"
+		  class="com.shuwen.crawler.common.task.service.impl.SeedServiceImpl">
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<bean id="commonDao" class="cn.xhzy.crawler.basic.dao.mysql.CommonDaoImpl"/>
+</beans>
